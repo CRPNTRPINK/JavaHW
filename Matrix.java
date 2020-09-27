@@ -1,7 +1,7 @@
 import java.awt.event.MouseAdapter;
 
-class Main{
-    public static void main(String[] args){
+class Main {
+    public static void main(String[] args) {
         Matrix a = new Matrix(3, 3);
         Matrix b = new Matrix(3, 3);
         int[][] test1 = {{3, 2, 1}, {4, 3, 3}, {5, 3, 3}};
@@ -14,8 +14,9 @@ class Main{
         Matrix.Showmatrix(test1, 1);
         Matrix.Showmatrix(test2, 2);
         Matrix.Summ(test1, test2);
+        Matrix.Sub(test1, test2);
         Matrix.Mult(test1, test2);
-        Matrix.Product(matprod1, matprod2);
+        Matrix.showProduct(Matrix.Product(matprod1, matprod2));
         Matrix.Degree(test1, 3);
     }
 }
@@ -42,7 +43,7 @@ class Matrix {
         a = a;
         b = b;
         int[][] result = new int[a.length][b.length];
-        System.out.println("\n" + "Результат сложения матриц:");
+        System.out.println("\n" + "Результат вычетания матриц:");
         for (int i = 0; i < a.length; i++) {
             for (int j = 0; j < a[0].length; j++) {
                 result[i][j] = a[i][j] + b[i][j];
@@ -50,6 +51,23 @@ class Matrix {
                 if (j == a[0].length - 1) System.out.println();
 
             }
+        }
+    }
+
+    public static void Sub(int[][] a, int[][] b){
+        a = a;
+        b = b;
+
+        int[][] result = new int[a.length][b.length];
+        System.out.println("\n" + "Результат сложения матриц:");
+        for (int i = 0; i < a.length; i++) {
+            for (int j = 0; j < a[0].length; j++) {
+                result[i][j] = a[i][j] - b[i][j];
+                System.out.print(result[i][j] + "\t");
+                if (j == a[0].length - 1) System.out.println();
+
+            }
+
         }
     }
 
@@ -73,8 +91,7 @@ class Matrix {
         }
     }
 
-    public static void Product(int[][] a, int[][] b) {
-        System.out.println("Резульат произведения матриц:");
+    public static int[][] Product(int[][] a, int[][] b) {
         a = a;
         b = b;
         int result_summ = 0;
@@ -87,63 +104,58 @@ class Matrix {
                 }
                 result[i][l] = result_summ;
                 result_summ = 0;
-                System.out.print(result[i][l] + "\t");
-                if (l == result[0].length - 1) System.out.println();
+            }
+        }
+        return result;
+    }
+
+    public static void showProduct(int[][] result) {
+        System.out.println("Резульат произведения матриц:");
+        for (int i = 0; i < result.length; i++) {
+            for (int j = 0; j < result[0].length; j++) {
+                System.out.print(result[i][j] + "\t");
+                if (j == result[0].length - 1) System.out.println();
             }
         }
     }
 
-//    public static void Degree(int[][] a, int b) {
-//        System.out.println("Резульат возведения в степень матрицы:");
-//        a = a;
-//        b = b;
-//        int summ = 0;
-//        int counter = 1;
-//        int[][] result = new int[a.length][a.length];
-//        int[][] double_a = new int[a.length][a.length];
-//        double_a = a.clone();
-//        while (counter != b){
-//            for (int i = 0; i < a.length; i++) {
-//                for (int j = 0; j < a.length; j++) {
-//                    for (int k = 0; k < a.length; k++){
-//                        summ += a[i][k] * double_a[k][j];
-//                    }
-//                    result[i][j] = summ;
-//                    summ = 0;
-//                }
-//            }
-//            double_a = result.clone();
-//            counter += 1;
-//        }
-//        for (int i = 0; i < result.length; i ++){
-//            for (int j = 0; j < result.length; j ++){
-//                System.out.print(result[i][j] + "\t");
-//                if (j == result[0].length - 1) System.out.println();
-//            }
-//        }
-//
-//    }
-
     public static void Degree(int[][] a, int b) {
+        System.out.print("Результат возведения матрицы в степень:\n");
+        int[][] mtrx = new int[a.length][a[0].length];
+        for (int i = 0; i < a.length; i++) {
+            for (int j = 0; j < a[0].length; j++) {
+                mtrx[i][j] = a[i][j];
+            }
+        }
         a = a;
         b = b;
-        int[][] matrixFinal = new int[a.length][a[0].length];
-        for (int i = 0; i < a.length; i++){
-            for (int j = 0; j < a[0].length; j++){
-                matrixFinal[i][j] = (int) Math.pow(a[i][j], b);
-                System.out.print(matrixFinal[i][j] + "\t");
+        int check = 1;
+        while (check != b) {
+            int[][] matrix = Matrix.Product(a, mtrx);
+
+            for (int i = 0; i < a.length; i++) {
+                for (int j = 0; j < a[0].length; j++) {
+                    mtrx[i][j] = matrix[i][j];
+                }
+            }
+            check += 1;
+        }
+        for (int i = 0; i < a.length; i++) {
+            for (int j = 0; j < a[0].length; j++) {
+                System.out.print(mtrx[i][j] + "\t");
                 if (j == a[0].length - 1) System.out.println();
             }
         }
+
     }
 
 
-    public static void Showmatrix(int [][] matrix, int number){
+    public static void Showmatrix(int[][] matrix, int number) {
         matrix = matrix;
         number = number;
         System.out.println("Матрица №" + number);
-        for (int i = 0; i < matrix.length; i++){
-            for (int j = 0; j < matrix[0].length; j++){
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
                 System.out.print(matrix[i][j] + "\t");
                 if (j == matrix[0].length - 1) System.out.println();
             }
